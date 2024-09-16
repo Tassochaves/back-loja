@@ -1,4 +1,4 @@
- package com.dev.api_loja.models;
+ package com.dev.api_loja.model;
 
 import java.math.BigDecimal;
 import java.util.List;
