@@ -1,17 +1,20 @@
 package com.dev.api_loja.service.produto;
 
+import java.util.List;
+
 import com.dev.api_loja.model.Produto;
-import java.util.List;;
+import com.dev.api_loja.requisicao.AddProdutoRequest;
+import com.dev.api_loja.requisicao.AtualizaProdutoRequest;
 
 public interface IProdutoService {
 
-    Produto adicionaProduto(Produto produto);
+    Produto adicionaProduto(AddProdutoRequest produtoRequest);
 
     Produto retornaProdutoPorId(Long id);
 
     void deletaProdutoPorId(Long id);
 
-    void atualizaProduto(Produto produto, Long produtoId);
+    Produto atualizaProduto(AtualizaProdutoRequest atualizaProdutoRequest, Long produtoId);
 
     List<Produto> retornaTodosProdutos();
 
@@ -25,5 +28,7 @@ public interface IProdutoService {
 
     List<Produto> retornaProdutosPorMarcaENome(String categoria, String nome);
 
-    List<Produto> contarProdutosPorMarcaENome(String marca, String nome);
+    Long contarProdutosPorMarcaENome(String marca, String nome);
+
+
 }

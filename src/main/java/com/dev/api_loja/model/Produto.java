@@ -11,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +18,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Produto {
 
@@ -38,5 +36,14 @@ public class Produto {
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Imagem> imagens;
+
+    public Produto(String descricao, int estoque, String marca, String nome, BigDecimal preco, Categoria categoria) {
+        this.categoria = categoria;
+        this.descricao = descricao;
+        this.estoque = estoque;
+        this.marca = marca;
+        this.nome = nome;
+        this.preco = preco;
+    }
 
 }
