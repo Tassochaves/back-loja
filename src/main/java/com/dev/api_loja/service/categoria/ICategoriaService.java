@@ -14,7 +14,7 @@ public interface ICategoriaService {
 
     Categoria adicionaCategoria(Categoria categoria);
 
-    Categoria atualizaCategoria(Categoria categoria);
+    Categoria atualizaCategoria(Categoria categoria, Long id);
 
     void deletaCategoriaPorId(Long id);
 }
