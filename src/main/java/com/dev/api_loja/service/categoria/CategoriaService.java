@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.dev.api_loja.excecoes.CategoriaExistenteExcecao;
 import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Categoria;
 import com.dev.api_loja.repository.CategoriaRepository;
@@ -35,7 +36,9 @@ public class CategoriaService implements ICategoriaService{
 
     @Override
     public Categoria adicionaCategoria(Categoria categoria) {
-        return null;
+        return Optional.of(categoria).filter(c -> !categoriaRepository.existsByNome(c.getNome()))
+                .map(categoriaRepository :: save)
+                .orElseThrow(() -> new CategoriaExistenteExcecao(categoria.getNome() + " já existe"));
     }
 
     @Override
