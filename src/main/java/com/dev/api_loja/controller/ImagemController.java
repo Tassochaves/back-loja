@@ -29,6 +29,7 @@ import com.dev.api_loja.service.imagem.IImagemService;
 
 import lombok.RequiredArgsConstructor;
 
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/imagens")
@@ -36,8 +37,8 @@ public class ImagemController {
     
     private final IImagemService imagemService;
 
-    @PostMapping("/envia")
-    public ResponseEntity<ApiResponse> adicionaImagens(
+    @PostMapping("/enviar")
+    public ResponseEntity<ApiResponse> adicionarImagens(
         @RequestParam List<MultipartFile> arquivos,
         @RequestParam Long produtoId
     ){
@@ -48,7 +49,7 @@ public class ImagemController {
             return ResponseEntity.ok(new ApiResponse("Enviado com sucesso!", imagensDTOs));
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Falha ao enviar imagens!", e.getMessage()));
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Falha ao enviar imagens!", e.getMessage()));
         }
     }
 
@@ -63,7 +64,7 @@ public class ImagemController {
                 .body(conteudoBytes);
     }
 
-    @PutMapping("/imagem/{imagemId}/atualiza")
+    @PutMapping("/imagem/{imagemId}/atualizar")
     public ResponseEntity<ApiResponse> atualizarImagem(@PathVariable Long imagemId, @RequestBody MultipartFile arquivo){
         
         try {
@@ -77,11 +78,11 @@ public class ImagemController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Falha ao enviar imagens!", INTERNAL_SERVER_ERROR));
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Falha ao enviar imagens!", INTERNAL_SERVER_ERROR));
     }
 
-    @DeleteMapping("/imagem/{imagemId}/exclui")
-    public ResponseEntity<ApiResponse> excluiImagem(@PathVariable Long imagemId){
+    @DeleteMapping("/imagem/{imagemId}/excluir")
+    public ResponseEntity<ApiResponse> excluirImagem(@PathVariable Long imagemId){
         
         try {
             Imagem imagem = imagemService.retornaImagemPorId(imagemId);
@@ -94,6 +95,6 @@ public class ImagemController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Falha ao excluir imagens!", INTERNAL_SERVER_ERROR));
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Falha ao excluir imagens!", INTERNAL_SERVER_ERROR));
     }
 }
