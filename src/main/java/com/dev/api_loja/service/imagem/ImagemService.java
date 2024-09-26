@@ -15,7 +15,6 @@ import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Imagem;
 import com.dev.api_loja.model.Produto;
 import com.dev.api_loja.repository.ImagemRepository;
-import com.dev.api_loja.repository.ProdutoRepository;
 import com.dev.api_loja.service.produto.ProdutoService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 public class ImagemService implements IImagemService{
 
     private final ImagemRepository imagemRepository;
-    private final ProdutoRepository produtoRepository;
     private final ProdutoService produtoService;
 
 
