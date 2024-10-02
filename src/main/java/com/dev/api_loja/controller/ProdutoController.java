@@ -119,8 +119,8 @@ public class ProdutoController {
         }         
     }
 
-    @GetMapping("/produto/{nome}")
-    public ResponseEntity<ApiResponse> listarProdutoPorNome(@PathVariable String nome){
+    @GetMapping("/produto/nome")
+    public ResponseEntity<ApiResponse> listarProdutoPorNome(@RequestParam String nome){
 
         try {
 
@@ -137,8 +137,8 @@ public class ProdutoController {
         }         
     }
 
-    @GetMapping("/produto/{marca}")
-    public ResponseEntity<ApiResponse> listarProdutoPorMarca(@PathVariable String marca){
+    @GetMapping("/produto/marca")
+    public ResponseEntity<ApiResponse> listarProdutoPorMarca(@RequestParam String marca){
 
         try {
 
@@ -155,8 +155,8 @@ public class ProdutoController {
         }         
     }
 
-    @GetMapping("/produto/{categoria}")
-    public ResponseEntity<ApiResponse> listarProdutoPorCategoria(@PathVariable String categoria){
+    @GetMapping("/produto/categoria")
+    public ResponseEntity<ApiResponse> listarProdutoPorCategoria(@RequestParam String categoria){
 
         try {
 
