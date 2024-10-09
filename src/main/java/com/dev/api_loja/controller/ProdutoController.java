@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dev.api_loja.dto.ProdutoDTO;
 import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Produto;
 import com.dev.api_loja.requisicao.AddProdutoRequest;
@@ -34,7 +35,10 @@ public class ProdutoController {
     @GetMapping("/todos")
     public ResponseEntity<ApiResponse> listarTodosProdutos(){
         List<Produto> produtos = produtoService.retornaTodosProdutos();
-        return ResponseEntity.ok(new ApiResponse("Sucesso!", produtos));
+
+        List<ProdutoDTO> produtosConvertidos = produtoService.retornaProdutosConvertidos(produtos);
+
+        return ResponseEntity.ok(new ApiResponse("Sucesso!", produtosConvertidos));
     }
 
     @GetMapping("/produto/{produtoId}")
@@ -42,8 +46,11 @@ public class ProdutoController {
 
         try {
             Produto produto = produtoService.retornaProdutoPorId(produtoId);
-            return ResponseEntity.ok(new ApiResponse("Sucesso!", produto));
-        } catch (RecursoNaoEncontradoExcecao e) {
+
+            ProdutoDTO produtoDTO = produtoService.convertParaDTO(produto);
+
+            return ResponseEntity.ok(new ApiResponse("Sucesso!", produtoDTO));
+        } catch (Exception e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }
@@ -65,7 +72,7 @@ public class ProdutoController {
         try {
             Produto produtoAtualizado = produtoService.atualizaProduto(atualizaRequest, produtoId);
             return ResponseEntity.ok(new ApiResponse("Produto atualizado com sucesso!", produtoAtualizado));
-        } catch (RecursoNaoEncontradoExcecao e) {
+        } catch (Exception e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }       
     }
@@ -89,12 +96,13 @@ public class ProdutoController {
         try {
 
             List<Produto> produtos = produtoService.retornaProdutosPorMarcaENome(nomeMarca, nomeProduto);
+            List<ProdutoDTO> produtosConvertidos = produtoService.retornaProdutosConvertidos(produtos);
 
             if (produtos.isEmpty()) {
                 return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("Produtos não encontrado!", null));
             }
 
-            return ResponseEntity.ok(new ApiResponse("Sucesso!", produtos));
+            return ResponseEntity.ok(new ApiResponse("Sucesso!", produtosConvertidos));
             
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));

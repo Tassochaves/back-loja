@@ -30,13 +30,13 @@ public class ImagemService implements IImagemService{
     @Override
     public Imagem retornaImagemPorId(Long id) {
         return imagemRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Não existe imagem com o ID: " + id));
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Nao existe imagem com o ID: " + id));
     }
 
     @Override
     public void deletaImagemPorId(Long id) {
         imagemRepository.findById(id).ifPresentOrElse(imagemRepository::delete, () -> {
-            throw new RecursoNaoEncontradoExcecao("Não existe imagem com o ID: " + id);
+            throw new RecursoNaoEncontradoExcecao("Nao existe imagem com o ID: " + id);
         });
     }
 

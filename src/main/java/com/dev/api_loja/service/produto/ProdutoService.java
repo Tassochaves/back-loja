@@ -3,12 +3,17 @@ package com.dev.api_loja.service.produto;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.dev.api_loja.dto.ImagemDTO;
+import com.dev.api_loja.dto.ProdutoDTO;
 import com.dev.api_loja.excecoes.ProdutoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Categoria;
+import com.dev.api_loja.model.Imagem;
 import com.dev.api_loja.model.Produto;
 import com.dev.api_loja.repository.CategoriaRepository;
+import com.dev.api_loja.repository.ImagemRepository;
 import com.dev.api_loja.repository.ProdutoRepository;
 import com.dev.api_loja.requisicao.AddProdutoRequest;
 import com.dev.api_loja.requisicao.AtualizaProdutoRequest;
@@ -21,6 +26,8 @@ public class ProdutoService implements IProdutoService{
 
     private final ProdutoRepository produtoRepository;
     private final CategoriaRepository categoriaRepository;
+    private final ImagemRepository imagemRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public Produto adicionaProduto(AddProdutoRequest produtoRequest) {
@@ -118,6 +125,22 @@ public class ProdutoService implements IProdutoService{
     @Override
     public Long contarProdutosPorMarcaENome(String marca, String nome) {
         return produtoRepository.countByMarcaAndNome(marca, nome);
+    }
+
+    @Override
+    public List<ProdutoDTO> retornaProdutosConvertidos(List<Produto> produtos){
+        return produtos.stream().map(this::convertParaDTO).toList();
+    }
+
+    @Override
+    public ProdutoDTO convertParaDTO(Produto produto){
+        ProdutoDTO produtoDTO = modelMapper.map(produto, ProdutoDTO.class);
+        List<Imagem> imagens = imagemRepository.findByProdutoId(produto.getId());
+
+        List<ImagemDTO> imagensDTOs = imagens.stream().map(imagem -> modelMapper.map(imagem, ImagemDTO.class)).toList();
+
+        produtoDTO.setImagens(imagensDTOs);
+        return produtoDTO;
     }
 
 }

@@ -2,6 +2,7 @@ package com.dev.api_loja.service.produto;
 
 import java.util.List;
 
+import com.dev.api_loja.dto.ProdutoDTO;
 import com.dev.api_loja.model.Produto;
 import com.dev.api_loja.requisicao.AddProdutoRequest;
 import com.dev.api_loja.requisicao.AtualizaProdutoRequest;
@@ -30,5 +31,7 @@ public interface IProdutoService {
 
     Long contarProdutosPorMarcaENome(String marca, String nome);
 
+    ProdutoDTO convertParaDTO(Produto produto);
 
+    List<ProdutoDTO> retornaProdutosConvertidos(List<Produto> produtos);
 }
