@@ -96,12 +96,13 @@ public class ProdutoController {
         try {
 
             List<Produto> produtos = produtoService.retornaProdutosPorMarcaENome(nomeMarca, nomeProduto);
-            List<ProdutoDTO> produtosConvertidos = produtoService.retornaProdutosConvertidos(produtos);
+            
 
             if (produtos.isEmpty()) {
                 return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("Produtos não encontrado!", null));
             }
-
+            
+            List<ProdutoDTO> produtosConvertidos = produtoService.retornaProdutosConvertidos(produtos);
             return ResponseEntity.ok(new ApiResponse("Sucesso!", produtosConvertidos));
             
         } catch (Exception e) {
