@@ -27,7 +27,7 @@ public class CarrinhoItem {
 
     private int quantidade;
     private BigDecimal precoUnitario;
-    private BigDecimal subTotal;
+    private BigDecimal precoTotal;
 
     @ManyToOne
     @JoinColumn(name = "produto_id")
@@ -38,6 +38,6 @@ public class CarrinhoItem {
     private Carrinho carrinho;
 
     public void calcularSubtotal(){
-        this.subTotal = precoUnitario.multiply(new BigDecimal(quantidade));
+        this.precoTotal = precoUnitario.multiply(new BigDecimal(quantidade));
     }
 }

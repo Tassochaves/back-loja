@@ -28,5 +28,30 @@ public class Carrinho {
     private BigDecimal valorTotal = BigDecimal.ZERO;
 
     @OneToMany(mappedBy = "carrinho", cascade = CascadeType.ALL, orphanRemoval=true)
-    private Set<CarrinhoItem> itemsCarrinho;
+    private Set<CarrinhoItem> itensCarrinho;
+
+    public void adicionarItem(CarrinhoItem itemCarrinho){
+        this.itensCarrinho.add(itemCarrinho);
+        itemCarrinho.setCarrinho(this);
+        atualizaValorTotal();
+    }
+
+    public void removeItem(CarrinhoItem itemCarrinho){
+        this.itensCarrinho.remove(itemCarrinho);
+        itemCarrinho.setCarrinho(null);
+        atualizaValorTotal();
+    }
+
+    //recalcula o valor total do carrinho
+    public void atualizaValorTotal(){
+        this.valorTotal = itensCarrinho.stream().map(item -> {
+            BigDecimal precoUnitario = item.getPrecoUnitario();
+
+            if (precoUnitario == null) {
+                return BigDecimal.ZERO;
+            }
+
+            return precoUnitario.multiply(BigDecimal.valueOf(item.getQuantidade()));
+        }).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 }
