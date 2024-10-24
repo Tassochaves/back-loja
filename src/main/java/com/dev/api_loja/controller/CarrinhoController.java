@@ -42,8 +42,7 @@ public class CarrinhoController {
             return ResponseEntity.ok(new ApiResponse("Carrinho limpado com sucesso!", null));
         } catch (RecursoNaoEncontradoExcecao e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
-        }
-        
+        }  
     }
 
     @GetMapping("/preco-total/{idCarrinho}")
@@ -56,6 +55,5 @@ public class CarrinhoController {
         } catch (RecursoNaoEncontradoExcecao e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
-        
     }
 }
