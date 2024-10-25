@@ -8,4 +8,5 @@ public interface ICarrinhoService {
     Carrinho retornaCarrinho(Long id);
     void limpaCarrinho(Long id);
     BigDecimal retornaPrecoTotal(Long id);
+    Long inicializaNovoCarrinho();
 }

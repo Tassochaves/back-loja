@@ -1,6 +1,7 @@
 package com.dev.api_loja.model;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -28,7 +29,7 @@ public class Carrinho {
     private BigDecimal valorTotal = BigDecimal.ZERO;
 
     @OneToMany(mappedBy = "carrinho", cascade = CascadeType.ALL, orphanRemoval=true)
-    private Set<CarrinhoItem> itensCarrinho;
+    private Set<CarrinhoItem> itensCarrinho = new HashSet<>();
 
     public void adicionarItem(CarrinhoItem itemCarrinho){
         this.itensCarrinho.add(itemCarrinho);
