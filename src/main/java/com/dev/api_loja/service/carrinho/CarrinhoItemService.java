@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class CarrinhoItemService implements ICarrinhoItemService{
+public class CarrinhoItemService implements ICarrinhoItemService {
 
     private final CarrinhoItemRepository carrinhoItemRepository;
     private final CarrinhoRepository carrinhoRepository;
@@ -26,11 +26,12 @@ public class CarrinhoItemService implements ICarrinhoItemService{
     @Override
     public void adicionaItemCarrinho(Long carrinhoId, Long produtoId, int quantidade) {
         /*
-        1 - Pegar o carrinho
-        2 - Obter o produto
-        3 - Verificar se o produto já está no carrinho
-        4 - Se sim, aumente a quantidade com a quantidade solicitada
-        5 - Se não, inicie uma nova entrada de item no carrinho. */
+         * 1 - Pegar o carrinho
+         * 2 - Obter o produto
+         * 3 - Verificar se o produto já está no carrinho
+         * 4 - Se sim, aumente a quantidade com a quantidade solicitada
+         * 5 - Se não, inicie uma nova entrada de item no carrinho.
+         */
         Carrinho carrinho = carrinhoService.retornaCarrinho(carrinhoId);
         Produto produto = produtoService.retornaProdutoPorId(produtoId);
 
@@ -44,7 +45,7 @@ public class CarrinhoItemService implements ICarrinhoItemService{
             carrinhoItem.setProduto(produto);
             carrinhoItem.setQuantidade(quantidade);
             carrinhoItem.setPrecoUnitario(produto.getPreco());
-        }else{
+        } else {
             carrinhoItem.setQuantidade(carrinhoItem.getQuantidade() + quantidade);
         }
 
@@ -56,9 +57,9 @@ public class CarrinhoItemService implements ICarrinhoItemService{
 
     @Override
     public void removeItemCarrinho(Long carrinhoId, Long produtoId) {
-        Carrinho carrinho = carrinhoService.retornaCarrinho(produtoId);
+        Carrinho carrinho = carrinhoService.retornaCarrinho(carrinhoId);
         CarrinhoItem itemParaRemover = retornaItemCarrinho(carrinhoId, produtoId);
-        
+
         carrinho.removeItem(itemParaRemover);
         carrinhoRepository.save(carrinho);
 
@@ -76,15 +77,18 @@ public class CarrinhoItemService implements ICarrinhoItemService{
                     item.setPrecoUnitario(item.getProduto().getPreco());
                     item.calcularSubtotal();
                 });
-        
-        BigDecimal valorTotal = carrinho.getValorTotal();
+
+        BigDecimal valorTotal = carrinho.getItensCarrinho()
+                .stream().map(CarrinhoItem::getPrecoTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
         carrinho.setValorTotal(valorTotal);
 
         carrinhoRepository.save(carrinho);
     }
 
     @Override
-    public CarrinhoItem retornaItemCarrinho(Long carrinhoId, Long produtoId){
+    public CarrinhoItem retornaItemCarrinho(Long carrinhoId, Long produtoId) {
         Carrinho carrinho = carrinhoService.retornaCarrinho(carrinhoId);
 
         return carrinho.getItensCarrinho()
