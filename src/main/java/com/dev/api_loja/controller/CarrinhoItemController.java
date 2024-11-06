@@ -27,10 +27,10 @@ public class CarrinhoItemController {
 
     @PostMapping("/adicionar")
     public ResponseEntity<ApiResponse> adicionarItemParaCarrinho(
-                @RequestParam(required = false) Long carrinhoId,
-                @RequestParam Long produtoId,
-                @RequestParam Integer quantidade){
-        
+            @RequestParam(required = false) Long carrinhoId,
+            @RequestParam Long produtoId,
+            @RequestParam Integer quantidade) {
+
         try {
 
             if (carrinhoId == null) {
@@ -42,12 +42,12 @@ public class CarrinhoItemController {
         } catch (RecursoNaoEncontradoExcecao e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
-            
+
     }
 
-    @DeleteMapping("remover/{carrinhoId}/item/{itemId}")
-    public ResponseEntity<ApiResponse> removerItemCarrinho(@PathVariable Long carrinhoId, @PathVariable Long itemId){
-        
+    @DeleteMapping("remover/carrinho/{carrinhoId}/item/{itemId}")
+    public ResponseEntity<ApiResponse> removerItemCarrinho(@PathVariable Long carrinhoId, @PathVariable Long itemId) {
+
         try {
             carrinhoItemService.removeItemCarrinho(carrinhoId, itemId);
             return ResponseEntity.ok(new ApiResponse("Item removido com sucesso!", null));
@@ -56,12 +56,12 @@ public class CarrinhoItemController {
         }
     }
 
-    @PutMapping("atualizar/{carrinhoId}/item/{itemId}")
+    @PutMapping("atualizar/carrinho/{carrinhoId}/item/{itemId}")
     public ResponseEntity<ApiResponse> atualizarQuantidadeItem(
-                @PathVariable Long carrinhoId, 
-                @PathVariable Long itemId, 
-                @RequestParam Integer quantidade){
-        
+            @PathVariable Long carrinhoId,
+            @PathVariable Long itemId,
+            @RequestParam Integer quantidade) {
+
         try {
             carrinhoItemService.atualizaQuantidadeItem(carrinhoId, itemId, quantidade);
             return ResponseEntity.ok(new ApiResponse("Item atualizado com sucesso!", null));

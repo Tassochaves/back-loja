@@ -2,6 +2,8 @@ package com.dev.api_loja.model;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,11 +35,12 @@ public class CarrinhoItem {
     @JoinColumn(name = "produto_id")
     private Produto produto;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "carrinho_id")
     private Carrinho carrinho;
 
-    public void calcularSubtotal(){
+    public void calcularSubtotal() {
         this.precoTotal = precoUnitario.multiply(new BigDecimal(quantidade));
     }
 }

@@ -28,23 +28,23 @@ public class Carrinho {
 
     private BigDecimal valorTotal = BigDecimal.ZERO;
 
-    @OneToMany(mappedBy = "carrinho", cascade = CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy = "carrinho", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CarrinhoItem> itensCarrinho = new HashSet<>();
 
-    public void adicionarItem(CarrinhoItem itemCarrinho){
+    public void adicionarItem(CarrinhoItem itemCarrinho) {
         this.itensCarrinho.add(itemCarrinho);
         itemCarrinho.setCarrinho(this);
         atualizaValorTotal();
     }
 
-    public void removeItem(CarrinhoItem itemCarrinho){
+    public void removeItem(CarrinhoItem itemCarrinho) {
         this.itensCarrinho.remove(itemCarrinho);
         itemCarrinho.setCarrinho(null);
         atualizaValorTotal();
     }
 
-    //recalcula o valor total do carrinho
-    public void atualizaValorTotal(){
+    // recalcula o valor total do carrinho
+    public void atualizaValorTotal() {
         this.valorTotal = itensCarrinho.stream().map(item -> {
             BigDecimal precoUnitario = item.getPrecoUnitario();
 

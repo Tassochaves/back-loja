@@ -25,7 +25,7 @@ public class CarrinhoController {
     private final ICarrinhoService carrinhoService;
 
     @GetMapping("/meu-carrinho/{idCarrinho}")
-    public ResponseEntity<ApiResponse> retornaCarrinho(@PathVariable Long idCarrinho){
+    public ResponseEntity<ApiResponse> retornaCarrinho(@PathVariable Long idCarrinho) {
         try {
             Carrinho carrinho = carrinhoService.retornaCarrinho(idCarrinho);
             return ResponseEntity.ok(new ApiResponse("Sucesso!", carrinho));
@@ -34,19 +34,19 @@ public class CarrinhoController {
         }
     }
 
-    @DeleteMapping("limpa-carrinho/{idCarrinho}")
-    public ResponseEntity<ApiResponse> limpaCarrinho(@PathVariable Long idCarrinho){
-        
+    @DeleteMapping("limpar-carrinho/{idCarrinho}")
+    public ResponseEntity<ApiResponse> limpaCarrinho(@PathVariable Long idCarrinho) {
+
         try {
             carrinhoService.limpaCarrinho(idCarrinho);
             return ResponseEntity.ok(new ApiResponse("Carrinho limpado com sucesso!", null));
         } catch (RecursoNaoEncontradoExcecao e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
-        }  
+        }
     }
 
     @GetMapping("/preco-total/{idCarrinho}")
-    public ResponseEntity<ApiResponse> obtemPrecoTotal(@PathVariable Long idCarrinho){
+    public ResponseEntity<ApiResponse> obtemPrecoTotal(@PathVariable Long idCarrinho) {
 
         try {
             BigDecimal precoTotal = carrinhoService.retornaPrecoTotal(idCarrinho);
