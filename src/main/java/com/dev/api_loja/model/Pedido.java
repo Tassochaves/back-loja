@@ -36,5 +36,5 @@ public class Pedido {
     private StatusPedido statusPedido;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ItemPedido> itensPedido = new HashSet<>();
+    private Set<PedidoItem> itensPedido = new HashSet<>();
 }

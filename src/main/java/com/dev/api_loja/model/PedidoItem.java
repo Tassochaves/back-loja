@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class ItemPedido {
+public class PedidoItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,12 +32,11 @@ public class ItemPedido {
     @JoinColumn(name = "produto_id")
     private Produto produto;
 
-    public ItemPedido(Pedido pedido, Produto produto, int quantidade, BigDecimal preco) {
+    public PedidoItem(Pedido pedido, Produto produto, int quantidade, BigDecimal preco) {
         this.pedido = pedido;
         this.produto = produto;
         this.quantidade = quantidade;
         this.preco = preco;
-
     }
 
 }
