@@ -2,6 +2,7 @@ package com.dev.api_loja.service.pedido;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import com.dev.api_loja.model.PedidoItem;
 import com.dev.api_loja.model.Produto;
 import com.dev.api_loja.repository.PedidoRepository;
 import com.dev.api_loja.repository.ProdutoRepository;
+import com.dev.api_loja.service.carrinho.CarrinhoService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,26 +25,33 @@ public class PedidoService implements IPedidoService {
 
     private final PedidoRepository pedidoRepository;
     private final ProdutoRepository produtoRepository;
+    private final CarrinhoService carrinhoService;
 
     @Override
-    public Pedido fazerPedido(Long userId) {
-        return null;
+    public Pedido fazerPedido(Long usuarioId) {
+
+        Carrinho carrinho = carrinhoService.retornaCarrinhoPorUsuario(usuarioId);
+
+        Pedido pedido = criarPedido(carrinho);
+        List<PedidoItem> listaItensPedido = criarItensPedido(pedido, carrinho);
+
+        pedido.setItensPedido(new HashSet<>(listaItensPedido));
+        pedido.setTotalParaPagar(calculaVatorTotalPedido(listaItensPedido));
+
+        Pedido pedidoSalvo = pedidoRepository.save(pedido);
+
+        carrinhoService.limpaCarrinho(carrinho.getId());
+        return pedidoSalvo;
     }
 
     private Pedido criarPedido(Carrinho carrinho) {
 
         Pedido pedido = new Pedido();
 
-        // - Configuar usuario...
+        pedido.setUsuario(carrinho.getUsuario());
         pedido.setStatusPedido(StatusPedido.PENDENTE);
         pedido.setDataPedido(LocalDate.now());
         return pedido;
-    }
-
-    @Override
-    public Pedido retornaPedido(Long pedidoId) {
-        return pedidoRepository.findById(pedidoId)
-                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Pedido nao encontrado!"));
     }
 
     private List<PedidoItem> criarItensPedido(Pedido pedido, Carrinho carrinho) {
@@ -62,6 +71,17 @@ public class PedidoService implements IPedidoService {
                 .stream()
                 .map(item -> item.getPreco().multiply(new BigDecimal(item.getQuantidade())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public Pedido retornaPedido(Long pedidoId) {
+        return pedidoRepository.findById(pedidoId)
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Pedido nao encontrado!"));
+    }
+
+    @Override
+    public List<Pedido> retornaPedidoUsuario(Long usuarioId) {
+        return pedidoRepository.findByUsuarioId(usuarioId);
     }
 
 }

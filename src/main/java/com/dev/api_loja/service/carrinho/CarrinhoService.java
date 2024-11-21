@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class CarrinhoService implements ICarrinhoService{
+public class CarrinhoService implements ICarrinhoService {
 
     private final CarrinhoRepository carrinhoRepository;
     private final CarrinhoItemRepository carrinhoItemRepository;
@@ -24,7 +24,7 @@ public class CarrinhoService implements ICarrinhoService{
     @Override
     public Carrinho retornaCarrinho(Long id) {
         Carrinho carrinho = carrinhoRepository.findById(id)
-            .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Carrinho nao encontrado!"));
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Carrinho nao encontrado!"));
 
         BigDecimal valorTotal = carrinho.getValorTotal();
         carrinho.setValorTotal(valorTotal);
@@ -49,12 +49,17 @@ public class CarrinhoService implements ICarrinhoService{
     }
 
     @Override
-    public Long inicializaNovoCarrinho(){
+    public Long inicializaNovoCarrinho() {
         Carrinho novoCarrinho = new Carrinho();
         Long novoIdCarrinho = geradorIdCarrinho.incrementAndGet();
 
         novoCarrinho.setId(novoIdCarrinho);
         return carrinhoRepository.save(novoCarrinho).getId();
+    }
+
+    @Override
+    public Carrinho retornaCarrinhoPorUsuario(Long usuarioId) {
+        return carrinhoRepository.findByUsuarioId(usuarioId);
     }
 
 }

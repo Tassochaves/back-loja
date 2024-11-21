@@ -6,7 +6,12 @@ import com.dev.api_loja.model.Carrinho;
 
 public interface ICarrinhoService {
     Carrinho retornaCarrinho(Long id);
+
     void limpaCarrinho(Long id);
+
     BigDecimal retornaPrecoTotal(Long id);
+
     Long inicializaNovoCarrinho();
+
+    Carrinho retornaCarrinhoPorUsuario(Long usuarioId);
 }
