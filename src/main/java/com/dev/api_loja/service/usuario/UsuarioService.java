@@ -19,7 +19,8 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public Usuario retornaUsuarioPorId(Long usuarioId) {
 
-        return null;
+        return usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Usuario nao encontrado!"));
     }
 
     @Override
@@ -29,12 +30,19 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario alteraUsuario(AtualizaUsuarioRequest atualizaReques, Long usuarioId) {
-        return null;
+        return usuarioRepository.findById(usuarioId).map(usuarioExistente -> {
+            usuarioExistente.setPrimeiroNome(atualizaReques.getPrimeiroNome());
+            usuarioExistente.setSobrenome(atualizaReques.getSobrenome());
+
+            return usuarioRepository.save(usuarioExistente);
+        }).orElseThrow(() -> new RecursoNaoEncontradoExcecao("Usuario nao encontrado!"));
     }
 
     @Override
     public void excluiUsuario(Long usuarioId) {
-
+        usuarioRepository.findById(usuarioId).ifPresentOrElse(usuarioRepository::delete, () -> {
+            throw new RecursoNaoEncontradoExcecao("Usuario nao encontrado!");
+        });
     }
 
 }
