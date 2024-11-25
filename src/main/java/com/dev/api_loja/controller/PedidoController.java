@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dev.api_loja.dto.PedidoDTO;
 import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Pedido;
 import com.dev.api_loja.resposta.ApiResponse;
@@ -44,9 +45,9 @@ public class PedidoController {
     public ResponseEntity<ApiResponse> retornaPedidoPorId(@PathVariable Long pedidoId) {
 
         try {
-            Pedido pedido = pedidoService.retornaPedido(pedidoId);
+            PedidoDTO pedidoDTO = pedidoService.retornaPedido(pedidoId);
 
-            return ResponseEntity.ok(new ApiResponse("Pedido encontrado com sucesso!", pedido));
+            return ResponseEntity.ok(new ApiResponse("Pedido encontrado com sucesso!", pedidoDTO));
         } catch (RecursoNaoEncontradoExcecao e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ApiResponse("Oops! ", e.getMessage()));
@@ -57,7 +58,7 @@ public class PedidoController {
     public ResponseEntity<ApiResponse> retornaUsuarioPedido(@PathVariable Long usuarioId) {
 
         try {
-            List<Pedido> pedidos = pedidoService.retornaPedidoUsuario(usuarioId);
+            List<PedidoDTO> pedidos = pedidoService.retornaPedidoUsuario(usuarioId);
 
             return ResponseEntity.ok(new ApiResponse("Pedido encontrado com sucesso!", pedidos));
         } catch (RecursoNaoEncontradoExcecao e) {

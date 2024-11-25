@@ -5,8 +5,10 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.dev.api_loja.dto.PedidoDTO;
 import com.dev.api_loja.enums.StatusPedido;
 import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Carrinho;
@@ -26,6 +28,7 @@ public class PedidoService implements IPedidoService {
     private final PedidoRepository pedidoRepository;
     private final ProdutoRepository produtoRepository;
     private final CarrinhoService carrinhoService;
+    private final ModelMapper modelMapper;
 
     @Override
     public Pedido fazerPedido(Long usuarioId) {
@@ -74,14 +77,19 @@ public class PedidoService implements IPedidoService {
     }
 
     @Override
-    public Pedido retornaPedido(Long pedidoId) {
-        return pedidoRepository.findById(pedidoId)
+    public PedidoDTO retornaPedido(Long pedidoId) {
+        return pedidoRepository.findById(pedidoId).map(this::pedidoParaDTO)
                 .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Pedido nao encontrado!"));
     }
 
     @Override
-    public List<Pedido> retornaPedidoUsuario(Long usuarioId) {
-        return pedidoRepository.findByUsuarioId(usuarioId);
+    public List<PedidoDTO> retornaPedidoUsuario(Long usuarioId) {
+        List<Pedido> pedidos = pedidoRepository.findByUsuarioId(usuarioId);
+        return pedidos.stream().map(this::pedidoParaDTO).toList();
+    }
+
+    private PedidoDTO pedidoParaDTO(Pedido pedido) {
+        return modelMapper.map(pedido, PedidoDTO.class);
     }
 
 }
