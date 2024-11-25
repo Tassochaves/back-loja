@@ -1,8 +1,11 @@
 package com.dev.api_loja.service.usuario;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
+import com.dev.api_loja.excecoes.UsuarioExistenteExcecao;
 import com.dev.api_loja.model.Usuario;
 import com.dev.api_loja.repository.UsuarioRepository;
 import com.dev.api_loja.requisicao.AddUsuarioRequest;
@@ -25,7 +28,19 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario criaUsuario(AddUsuarioRequest usuarioRequest) {
-        return null;
+        return Optional.of(usuarioRequest)
+                .filter(usuario -> !usuarioRepository.existsByEmail(usuarioRequest.getEmail()))
+                .map(requisicao -> {
+
+                    Usuario usuario = new Usuario();
+                    usuario.setEmail(usuarioRequest.getEmail());
+                    usuario.setSenha(usuarioRequest.getSenha());
+                    usuario.setPrimeiroNome(usuarioRequest.getPrimeiroNome());
+                    usuario.setSobrenome(usuarioRequest.getSobrenome());
+
+                    return usuarioRepository.save(usuario);
+                }).orElseThrow(
+                        () -> new UsuarioExistenteExcecao("Oops! " + usuarioRequest.getEmail() + " ja cadastrado!"));
     }
 
     @Override
