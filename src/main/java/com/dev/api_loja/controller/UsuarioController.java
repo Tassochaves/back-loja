@@ -15,6 +15,7 @@ import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.excecoes.UsuarioExistenteExcecao;
 import com.dev.api_loja.model.Usuario;
 import com.dev.api_loja.requisicao.AddUsuarioRequest;
+import com.dev.api_loja.requisicao.AtualizaUsuarioRequest;
 import com.dev.api_loja.resposta.ApiResponse;
 import com.dev.api_loja.service.usuario.IUsuarioService;
 
@@ -48,5 +49,34 @@ public class UsuarioController {
         } catch (UsuarioExistenteExcecao e) {
             return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(), null));
         }
+    }
+
+    @PostMapping("/{usuarioId}/alterar")
+    public ResponseEntity<ApiResponse> alteraUsuario(@RequestBody AtualizaUsuarioRequest usuarioRequest,
+            @PathVariable Long usuarioId) {
+
+        try {
+
+            Usuario usuario = usuarioService.alteraUsuario(usuarioRequest, usuarioId);
+            return ResponseEntity.ok(new ApiResponse("Usuario alterado com sucesso!", usuario));
+
+        } catch (RecursoNaoEncontradoExcecao e) {
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+        }
+
+    }
+
+    @GetMapping("/{usuarioId}/excluir")
+    public ResponseEntity<ApiResponse> excluiUsuario(@PathVariable Long usuarioId) {
+
+        try {
+
+            usuarioService.excluiUsuario(usuarioId);
+            return ResponseEntity.ok(new ApiResponse("Usuario excluido com sucesso!", null));
+
+        } catch (RecursoNaoEncontradoExcecao e) {
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+        }
+
     }
 }
