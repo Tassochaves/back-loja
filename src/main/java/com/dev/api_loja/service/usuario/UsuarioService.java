@@ -2,8 +2,10 @@ package com.dev.api_loja.service.usuario;
 
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.dev.api_loja.dto.UsuarioDTO;
 import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.excecoes.UsuarioExistenteExcecao;
 import com.dev.api_loja.model.Usuario;
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioService implements IUsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public Usuario retornaUsuarioPorId(Long usuarioId) {
@@ -58,6 +61,11 @@ public class UsuarioService implements IUsuarioService {
         usuarioRepository.findById(usuarioId).ifPresentOrElse(usuarioRepository::delete, () -> {
             throw new RecursoNaoEncontradoExcecao("Usuario nao encontrado!");
         });
+    }
+
+    @Override
+    public UsuarioDTO convertParaDTO(Usuario usuario) {
+        return modelMapper.map(usuario, UsuarioDTO.class);
     }
 
 }

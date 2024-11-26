@@ -12,11 +12,10 @@ public class ProdutoDTO {
 
     private Long id;
     private String nome;
-    private String marca; 
+    private String marca;
     private BigDecimal preco;
     private int estoque;
     private String descricao;
     private Categoria categoria;
-
     private List<ImagemDTO> imagens;
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dev.api_loja.dto.UsuarioDTO;
 import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.excecoes.UsuarioExistenteExcecao;
 import com.dev.api_loja.model.Usuario;
@@ -34,7 +35,9 @@ public class UsuarioController {
         try {
 
             Usuario usuario = usuarioService.retornaUsuarioPorId(usuarioId);
-            return ResponseEntity.ok(new ApiResponse("Sucesso!", usuario));
+            UsuarioDTO usuarioDTO = usuarioService.convertParaDTO(usuario);
+
+            return ResponseEntity.ok(new ApiResponse("Sucesso!", usuarioDTO));
         } catch (RecursoNaoEncontradoExcecao e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
@@ -45,7 +48,8 @@ public class UsuarioController {
 
         try {
             Usuario usuario = usuarioService.criaUsuario(usuarioRequest);
-            return ResponseEntity.ok(new ApiResponse("Usuario criado com sucesso!", usuario));
+            UsuarioDTO usuarioDTO = usuarioService.convertParaDTO(usuario);
+            return ResponseEntity.ok(new ApiResponse("Usuario criado com sucesso!", usuarioDTO));
         } catch (UsuarioExistenteExcecao e) {
             return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(), null));
         }
@@ -58,7 +62,8 @@ public class UsuarioController {
         try {
 
             Usuario usuario = usuarioService.alteraUsuario(usuarioRequest, usuarioId);
-            return ResponseEntity.ok(new ApiResponse("Usuario alterado com sucesso!", usuario));
+            UsuarioDTO usuarioDTO = usuarioService.convertParaDTO(usuario);
+            return ResponseEntity.ok(new ApiResponse("Usuario alterado com sucesso!", usuarioDTO));
 
         } catch (RecursoNaoEncontradoExcecao e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
