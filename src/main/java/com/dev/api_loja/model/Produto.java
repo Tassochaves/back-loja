@@ -1,4 +1,4 @@
- package com.dev.api_loja.model;
+package com.dev.api_loja.model;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -27,14 +27,13 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private String marca; 
+    private String marca;
     private BigDecimal preco;
     private int estoque;
     private String descricao;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "categoria_id")
-    @JsonIgnore
     private Categoria categoria;
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)

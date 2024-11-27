@@ -24,32 +24,32 @@ public class CarrinhoController {
 
     private final ICarrinhoService carrinhoService;
 
-    @GetMapping("/meu-carrinho/{idCarrinho}")
-    public ResponseEntity<ApiResponse> retornaCarrinho(@PathVariable Long idCarrinho) {
+    @GetMapping("/meu-carrinho/{carrinhoId}")
+    public ResponseEntity<ApiResponse> retornaCarrinho(@PathVariable Long carrinhoId) {
         try {
-            Carrinho carrinho = carrinhoService.retornaCarrinho(idCarrinho);
+            Carrinho carrinho = carrinhoService.retornaCarrinho(carrinhoId);
             return ResponseEntity.ok(new ApiResponse("Sucesso!", carrinho));
         } catch (RecursoNaoEncontradoExcecao e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }
 
-    @DeleteMapping("limpar-carrinho/{idCarrinho}")
-    public ResponseEntity<ApiResponse> limpaCarrinho(@PathVariable Long idCarrinho) {
+    @DeleteMapping("limpar-carrinho/{carrinhoId}")
+    public ResponseEntity<ApiResponse> limpaCarrinho(@PathVariable Long carrinhoId) {
 
         try {
-            carrinhoService.limpaCarrinho(idCarrinho);
+            carrinhoService.limpaCarrinho(carrinhoId);
             return ResponseEntity.ok(new ApiResponse("Carrinho limpado com sucesso!", null));
         } catch (RecursoNaoEncontradoExcecao e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }
 
-    @GetMapping("/preco-total/{idCarrinho}")
-    public ResponseEntity<ApiResponse> obtemPrecoTotal(@PathVariable Long idCarrinho) {
+    @GetMapping("/preco-total/{carrinhoId}")
+    public ResponseEntity<ApiResponse> obtemPrecoTotal(@PathVariable Long carrinhoId) {
 
         try {
-            BigDecimal precoTotal = carrinhoService.retornaPrecoTotal(idCarrinho);
+            BigDecimal precoTotal = carrinhoService.retornaPrecoTotal(carrinhoId);
 
             return ResponseEntity.ok(new ApiResponse("Preco total", precoTotal));
         } catch (RecursoNaoEncontradoExcecao e) {

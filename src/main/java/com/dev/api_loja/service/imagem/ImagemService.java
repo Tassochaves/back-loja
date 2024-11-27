@@ -21,11 +21,10 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class ImagemService implements IImagemService{
+public class ImagemService implements IImagemService {
 
     private final ImagemRepository imagemRepository;
     private final ProdutoService produtoService;
-
 
     @Override
     public Imagem retornaImagemPorId(Long id) {
@@ -42,7 +41,7 @@ public class ImagemService implements IImagemService{
 
     @Override
     public List<ImagemDTO> adicionaImagens(List<MultipartFile> arquivos, Long produtoId) {
-        
+
         Produto produto = produtoService.retornaProdutoPorId(produtoId);
         List<ImagemDTO> salvaImagemDTO = new ArrayList<>();
 
@@ -54,17 +53,17 @@ public class ImagemService implements IImagemService{
                 imagem.setTipoArquivo(arquivo.getContentType());
                 imagem.setImagem(new SerialBlob(arquivo.getBytes()));
                 imagem.setProduto(produto);
-                
+
                 String recusoDownload = "/api/v1/imagens/imagem/download/";
                 String downloadUrl = recusoDownload + imagem.getId();
                 imagem.setDownloadUrl(downloadUrl);
 
                 Imagem imagemSalva = imagemRepository.save(imagem);
 
-                imagemSalva.setDownloadUrl(downloadUrl+imagemSalva.getId());
+                imagemSalva.setDownloadUrl(downloadUrl + imagemSalva.getId());
                 imagemRepository.save(imagemSalva);
 
-                //Obter as propriedades para o DTO.
+                // Obter as propriedades para o DTO.
                 ImagemDTO imagemDTO = new ImagemDTO();
                 imagemDTO.setImagemId(imagemSalva.getId());
                 imagemDTO.setImagemNome(imagemSalva.getNomeArquivo());

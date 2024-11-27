@@ -8,7 +8,8 @@ import lombok.Data;
 public class PedidoItemDTO {
 
     private Long produtoId;
-    private String nomeProduto;
+    private String nome;
+    private String marca;
     private int quantidade;
     private BigDecimal preco;
 }

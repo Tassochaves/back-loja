@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class CarrinhoDTO {
-    private Long id;
+    private Long carrinhoId;
     private BigDecimal valorTotal;
     private Set<CarrinhoItemDTO> itens;
 }

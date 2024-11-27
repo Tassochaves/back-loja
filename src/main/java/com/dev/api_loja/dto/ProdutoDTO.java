@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class ProdutoDTO {
 
-    private Long id;
+    private Long produtoId;
     private String nome;
     private String marca;
     private BigDecimal preco;

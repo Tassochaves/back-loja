@@ -32,7 +32,8 @@ public class PedidoController {
         try {
 
             Pedido pedido = pedidoService.fazerPedido(usuarioId);
-            return ResponseEntity.ok(new ApiResponse("Pedido realizado com sucesso", pedido));
+            PedidoDTO pedidoDTO = pedidoService.pedidoParaDTO(pedido);
+            return ResponseEntity.ok(new ApiResponse("Pedido realizado com sucesso", pedidoDTO));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

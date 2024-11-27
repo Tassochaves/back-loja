@@ -29,7 +29,7 @@ public class Pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long pedidoId;
+    private Long id;
 
     private LocalDate dataPedido;
     private BigDecimal totalParaPagar;

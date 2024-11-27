@@ -22,14 +22,14 @@ public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String nome;
 
     @JsonIgnore
     @OneToMany(mappedBy = "categoria")
     private List<Produto> produtos;
 
-    public Categoria(String nome){
+    public Categoria(String nome) {
         this.nome = nome;
     }
 }

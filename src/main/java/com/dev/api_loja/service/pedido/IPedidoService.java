@@ -12,4 +12,6 @@ public interface IPedidoService {
     PedidoDTO retornaPedido(Long pedidoId);
 
     List<PedidoDTO> retornaPedidoUsuario(Long usuarioId);
+
+    PedidoDTO pedidoParaDTO(Pedido pedido);
 }

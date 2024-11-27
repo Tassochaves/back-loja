@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.dev.api_loja.model.Imagem;
 
-public interface ImagemRepository extends JpaRepository<Imagem, Long>{
+public interface ImagemRepository extends JpaRepository<Imagem, Long> {
 
-    List<Imagem> findByProdutoId(Long id);
+    List<Imagem> findByProdutoId(Long produtoId);
 
 }

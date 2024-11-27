@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProdutoService implements IProdutoService{
+public class ProdutoService implements IProdutoService {
 
     private final ProdutoRepository produtoRepository;
     private final CategoriaRepository categoriaRepository;
@@ -31,55 +31,56 @@ public class ProdutoService implements IProdutoService{
 
     @Override
     public Produto adicionaProduto(AddProdutoRequest produtoRequest) {
-        //Verifica se a categoria é encontrada no BD
-        //Se sim, defina como a nova categoria de produto
-        //Se não, salva como uma nova categoria
-        //Então adiciona como nova categoria de produto
-        Categoria categoria = Optional.ofNullable(categoriaRepository.findByNome(produtoRequest.getCategoria().getNome()))
-            .orElseGet(()->{
-                Categoria novaCategoria = new Categoria(produtoRequest.getCategoria().getNome());
-                return categoriaRepository.save(novaCategoria);
-            });
+        // Verifica se a categoria é encontrada no BD
+        // Se sim, defina como a nova categoria de produto
+        // Se não, salva como uma nova categoria
+        // Então adiciona como nova categoria de produto
+        Categoria categoria = Optional
+                .ofNullable(categoriaRepository.findByNome(produtoRequest.getCategoria().getNome()))
+                .orElseGet(() -> {
+                    Categoria novaCategoria = new Categoria(produtoRequest.getCategoria().getNome());
+                    return categoriaRepository.save(novaCategoria);
+                });
 
-        
         produtoRequest.setCategoria(categoria);
         return produtoRepository.save(criarProduto(produtoRequest, categoria));
     }
 
-    //Metodo auxiliar
-    private Produto criarProduto(AddProdutoRequest produtoRequest, Categoria categoria){
+    // Metodo auxiliar
+    private Produto criarProduto(AddProdutoRequest produtoRequest, Categoria categoria) {
         return new Produto(
-            produtoRequest.getDescricao(),
-            produtoRequest.getEstoque(),
-            produtoRequest.getMarca(),
-            produtoRequest.getNome(),
-            produtoRequest.getPreco(),
-            categoria
-        );
+                produtoRequest.getDescricao(),
+                produtoRequest.getEstoque(),
+                produtoRequest.getMarca(),
+                produtoRequest.getNome(),
+                produtoRequest.getPreco(),
+                categoria);
     }
 
     @Override
     public Produto retornaProdutoPorId(Long id) {
         return produtoRepository.findById(id)
-            .orElseThrow( ()-> new ProdutoNaoEncontradoExcecao("Produto não encontrado!"));
+                .orElseThrow(() -> new ProdutoNaoEncontradoExcecao("Produto não encontrado!"));
     }
 
     @Override
     public void deletaProdutoPorId(Long id) {
         produtoRepository.findById(id)
-            .ifPresentOrElse(produtoRepository::delete, ()->{throw new ProdutoNaoEncontradoExcecao("Produto não encontrado!");});
+                .ifPresentOrElse(produtoRepository::delete, () -> {
+                    throw new ProdutoNaoEncontradoExcecao("Produto não encontrado!");
+                });
     }
 
     @Override
     public Produto atualizaProduto(AtualizaProdutoRequest atualizaProdutoRequest, Long produtoId) {
         return produtoRepository.findById(produtoId)
-            .map(produtoExistente -> atualizarProdutoExistente(produtoExistente, atualizaProdutoRequest))
-            .map(produtoRepository :: save)
-            .orElseThrow(()-> new ProdutoNaoEncontradoExcecao("Produto não encontrado!"));
+                .map(produtoExistente -> atualizarProdutoExistente(produtoExistente, atualizaProdutoRequest))
+                .map(produtoRepository::save)
+                .orElseThrow(() -> new ProdutoNaoEncontradoExcecao("Produto não encontrado!"));
     }
 
-    //Metodo auxiliar
-    public Produto atualizarProdutoExistente(Produto produtoExistente, AtualizaProdutoRequest atualizaProdutoRequest){
+    // Metodo auxiliar
+    public Produto atualizarProdutoExistente(Produto produtoExistente, AtualizaProdutoRequest atualizaProdutoRequest) {
         produtoExistente.setNome(atualizaProdutoRequest.getNome());
         produtoExistente.setMarca(atualizaProdutoRequest.getMarca());
         produtoExistente.setPreco(atualizaProdutoRequest.getPreco());
@@ -128,12 +129,12 @@ public class ProdutoService implements IProdutoService{
     }
 
     @Override
-    public List<ProdutoDTO> retornaProdutosConvertidos(List<Produto> produtos){
+    public List<ProdutoDTO> retornaProdutosConvertidos(List<Produto> produtos) {
         return produtos.stream().map(this::convertParaDTO).toList();
     }
 
     @Override
-    public ProdutoDTO convertParaDTO(Produto produto){
+    public ProdutoDTO convertParaDTO(Produto produto) {
         ProdutoDTO produtoDTO = modelMapper.map(produto, ProdutoDTO.class);
         List<Imagem> imagens = imagemRepository.findByProdutoId(produto.getId());
 

@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class CarrinhoItemDTO {
 
-    private Long id;
+    private Long itemId;
     private int quantidade;
     private BigDecimal precoUnitario;
     private ProdutoDTO produto;

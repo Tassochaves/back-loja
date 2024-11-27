@@ -2,6 +2,8 @@ package com.dev.api_loja.model;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,7 @@ public class PedidoItem {
     private int quantidade;
     private BigDecimal preco;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;

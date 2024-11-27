@@ -19,6 +19,7 @@ import com.dev.api_loja.repository.PedidoRepository;
 import com.dev.api_loja.repository.ProdutoRepository;
 import com.dev.api_loja.service.carrinho.CarrinhoService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -30,6 +31,7 @@ public class PedidoService implements IPedidoService {
     private final CarrinhoService carrinhoService;
     private final ModelMapper modelMapper;
 
+    @Transactional
     @Override
     public Pedido fazerPedido(Long usuarioId) {
 
@@ -88,7 +90,8 @@ public class PedidoService implements IPedidoService {
         return pedidos.stream().map(this::pedidoParaDTO).toList();
     }
 
-    private PedidoDTO pedidoParaDTO(Pedido pedido) {
+    @Override
+    public PedidoDTO pedidoParaDTO(Pedido pedido) {
         return modelMapper.map(pedido, PedidoDTO.class);
     }
 
