@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
+import com.dev.api_loja.model.Carrinho;
+import com.dev.api_loja.model.Usuario;
 import com.dev.api_loja.resposta.ApiResponse;
 import com.dev.api_loja.service.carrinho.ICarrinhoItemService;
 import com.dev.api_loja.service.carrinho.ICarrinhoService;
+import com.dev.api_loja.service.usuario.IUsuarioService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,20 +27,19 @@ public class CarrinhoItemController {
 
     private final ICarrinhoItemService carrinhoItemService;
     private final ICarrinhoService carrinhoService;
+    private final IUsuarioService usuarioService;
 
     @PostMapping("/adicionar")
     public ResponseEntity<ApiResponse> adicionarItemParaCarrinho(
-            @RequestParam(required = false) Long carrinhoId,
             @RequestParam Long produtoId,
             @RequestParam Integer quantidade) {
 
         try {
 
-            if (carrinhoId == null) {
-                carrinhoId = carrinhoService.inicializaNovoCarrinho();
-            }
+            Usuario usuario = usuarioService.retornaUsuarioPorId(6L);
+            Carrinho carrinho = carrinhoService.inicializaNovoCarrinho(usuario);
 
-            carrinhoItemService.adicionaItemCarrinho(carrinhoId, produtoId, quantidade);
+            carrinhoItemService.adicionaItemCarrinho(carrinho.getId(), produtoId, quantidade);
             return ResponseEntity.ok(new ApiResponse("Item adicionado com sucesso!", null));
         } catch (RecursoNaoEncontradoExcecao e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));

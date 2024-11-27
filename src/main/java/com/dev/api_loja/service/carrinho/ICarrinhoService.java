@@ -3,6 +3,7 @@ package com.dev.api_loja.service.carrinho;
 import java.math.BigDecimal;
 
 import com.dev.api_loja.model.Carrinho;
+import com.dev.api_loja.model.Usuario;
 
 public interface ICarrinhoService {
     Carrinho retornaCarrinho(Long id);
@@ -11,7 +12,7 @@ public interface ICarrinhoService {
 
     BigDecimal retornaPrecoTotal(Long id);
 
-    Long inicializaNovoCarrinho();
+    Carrinho inicializaNovoCarrinho(Usuario usuario);
 
     Carrinho retornaCarrinhoPorUsuario(Long usuarioId);
 }

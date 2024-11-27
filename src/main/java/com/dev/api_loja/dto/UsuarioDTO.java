@@ -12,5 +12,5 @@ public class UsuarioDTO {
     private String sobrenome;
     private String email;
     private List<PedidoDTO> pedidos;
-    private CarrinhoDTO carrinhoDTO;
+    private CarrinhoDTO carrinho;
 }

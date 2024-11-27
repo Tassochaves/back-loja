@@ -1,12 +1,14 @@
 package com.dev.api_loja.service.carrinho;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
 
 import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Carrinho;
+import com.dev.api_loja.model.Usuario;
 import com.dev.api_loja.repository.CarrinhoItemRepository;
 import com.dev.api_loja.repository.CarrinhoRepository;
 
@@ -49,12 +51,15 @@ public class CarrinhoService implements ICarrinhoService {
     }
 
     @Override
-    public Long inicializaNovoCarrinho() {
-        Carrinho novoCarrinho = new Carrinho();
-        Long novoIdCarrinho = geradorIdCarrinho.incrementAndGet();
+    public Carrinho inicializaNovoCarrinho(Usuario usuario) {
 
-        novoCarrinho.setId(novoIdCarrinho);
-        return carrinhoRepository.save(novoCarrinho).getId();
+        return Optional.ofNullable(retornaCarrinhoPorUsuario(usuario.getId()))
+                .orElseGet(() -> {
+                    Carrinho carrinho = new Carrinho();
+                    carrinho.setUsuario(usuario);
+
+                    return carrinhoRepository.save(carrinho);
+                });
     }
 
     @Override
