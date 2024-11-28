@@ -1,7 +1,6 @@
 package com.dev.api_loja.controller;
 
 import java.util.List;
-
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,7 @@ public class ProdutoController {
     private final IProdutoService produtoService;
 
     @GetMapping("/todos")
-    public ResponseEntity<ApiResponse> listarTodosProdutos(){
+    public ResponseEntity<ApiResponse> listarTodosProdutos() {
         List<Produto> produtos = produtoService.retornaTodosProdutos();
 
         List<ProdutoDTO> produtosConvertidos = produtoService.retornaProdutosConvertidos(produtos);
@@ -41,8 +40,8 @@ public class ProdutoController {
         return ResponseEntity.ok(new ApiResponse("Sucesso!", produtosConvertidos));
     }
 
-    @GetMapping("/produto/{produtoId}")
-    public ResponseEntity<ApiResponse> listarProdutoPorId(@PathVariable Long produtoId){
+    @GetMapping("/produto/{produtoId}/produto")
+    public ResponseEntity<ApiResponse> listarProdutoPorId(@PathVariable Long produtoId) {
 
         try {
             Produto produto = produtoService.retornaProdutoPorId(produtoId);
@@ -56,7 +55,7 @@ public class ProdutoController {
     }
 
     @PostMapping("/adicionar")
-    public ResponseEntity<ApiResponse> adicionarProduto(@RequestBody AddProdutoRequest produtoRequest){
+    public ResponseEntity<ApiResponse> adicionarProduto(@RequestBody AddProdutoRequest produtoRequest) {
 
         try {
             Produto produto = produtoService.adicionaProduto(produtoRequest);
@@ -66,20 +65,21 @@ public class ProdutoController {
         }
     }
 
-    @PutMapping("/atualizar/{produtoId}")
-    public ResponseEntity<ApiResponse> atualizarProduto(@RequestBody AtualizaProdutoRequest atualizaRequest, @PathVariable Long produtoId){
-        
+    @PutMapping("/produto/{produtoId}/atualizar")
+    public ResponseEntity<ApiResponse> atualizarProduto(@RequestBody AtualizaProdutoRequest atualizaRequest,
+            @PathVariable Long produtoId) {
+
         try {
             Produto produtoAtualizado = produtoService.atualizaProduto(atualizaRequest, produtoId);
             return ResponseEntity.ok(new ApiResponse("Produto atualizado com sucesso!", produtoAtualizado));
         } catch (Exception e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
-        }       
+        }
     }
 
-    @DeleteMapping("/excluir/{produtoId}")
-    public ResponseEntity<ApiResponse> excluirProduto(@PathVariable Long produtoId){
-        
+    @DeleteMapping("/produto/{produtoId}/excluir")
+    public ResponseEntity<ApiResponse> excluirProduto(@PathVariable Long produtoId) {
+
         try {
 
             produtoService.deletaProdutoPorId(produtoId);
@@ -90,28 +90,29 @@ public class ProdutoController {
         }
     }
 
-    @GetMapping("/produto/nome-marca")
-    public ResponseEntity<ApiResponse> listarProdutoPorMarcaENome(@RequestParam String nomeMarca, @RequestParam String nomeProduto){
+    @GetMapping("/produtos/nome-e-marca")
+    public ResponseEntity<ApiResponse> listarProdutoPorMarcaENome(@RequestParam String nomeMarca,
+            @RequestParam String nomeProduto) {
 
         try {
 
             List<Produto> produtos = produtoService.retornaProdutosPorMarcaENome(nomeMarca, nomeProduto);
-            
 
             if (produtos.isEmpty()) {
                 return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("Produtos não encontrado!", null));
             }
-            
+
             List<ProdutoDTO> produtosConvertidos = produtoService.retornaProdutosConvertidos(produtos);
             return ResponseEntity.ok(new ApiResponse("Sucesso!", produtosConvertidos));
-            
+
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
-        }         
+        }
     }
 
-    @GetMapping("/produto/categoria-marca")
-    public ResponseEntity<ApiResponse> listarProdutoPorCategoriaEMarca(@RequestParam String categoria, @RequestParam String marca){
+    @GetMapping("/produto/categoria-e-marca")
+    public ResponseEntity<ApiResponse> listarProdutoPorCategoriaEMarca(@RequestParam String categoria,
+            @RequestParam String marca) {
 
         try {
 
@@ -122,14 +123,14 @@ public class ProdutoController {
             }
 
             return ResponseEntity.ok(new ApiResponse("Sucesso!", produtos));
-            
+
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
-        }         
+        }
     }
 
-    @GetMapping("/produto/nome")
-    public ResponseEntity<ApiResponse> listarProdutoPorNome(@RequestParam String nome){
+    @GetMapping("/produto/nome/produtos")
+    public ResponseEntity<ApiResponse> listarProdutoPorNome(@RequestParam String nome) {
 
         try {
 
@@ -139,15 +140,17 @@ public class ProdutoController {
                 return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("Produtos não encontrado!", null));
             }
 
+            // List<ProdutoDTO> produtosDTO =
+            // produtoService.retornaProdutosConvertidos(produtos);
             return ResponseEntity.ok(new ApiResponse("Sucesso!", produtos));
-            
+
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error: ", e.getMessage()));
-        }         
+        }
     }
 
     @GetMapping("/produto/marca")
-    public ResponseEntity<ApiResponse> listarProdutoPorMarca(@RequestParam String marca){
+    public ResponseEntity<ApiResponse> listarProdutoPorMarca(@RequestParam String marca) {
 
         try {
 
@@ -158,14 +161,14 @@ public class ProdutoController {
             }
 
             return ResponseEntity.ok(new ApiResponse("Sucesso!", produtos));
-            
+
         } catch (Exception e) {
             return ResponseEntity.ok(new ApiResponse(e.getMessage(), null));
-        }         
+        }
     }
 
     @GetMapping("/produto/categoria")
-    public ResponseEntity<ApiResponse> listarProdutoPorCategoria(@RequestParam String categoria){
+    public ResponseEntity<ApiResponse> listarProdutoPorCategoria(@RequestParam String categoria) {
 
         try {
 
@@ -176,16 +179,16 @@ public class ProdutoController {
             }
 
             return ResponseEntity.ok(new ApiResponse("Sucesso!", produtos));
-            
+
         } catch (Exception e) {
             return ResponseEntity.ok(new ApiResponse(e.getMessage(), null));
-        }         
+        }
     }
 
-    @GetMapping("/produto/quantidade")
-    public ResponseEntity<ApiResponse> quantidadeProdutosPorMarcaENome(@RequestParam String marca, @RequestParam String nome){
+    @GetMapping("/produto/quantidade/nome-e-marca")
+    public ResponseEntity<ApiResponse> quantidadeProdutosPorMarcaENome(@RequestParam String marca,
+            @RequestParam String nome) {
 
-        
         try {
             var quantidadeProduto = produtoService.contarProdutosPorMarcaENome(marca, nome);
             return ResponseEntity.ok(new ApiResponse("Quantidade de produto!", quantidadeProduto));
