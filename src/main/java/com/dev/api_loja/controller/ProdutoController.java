@@ -1,6 +1,8 @@
 package com.dev.api_loja.controller;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dev.api_loja.dto.ProdutoDTO;
+import com.dev.api_loja.excecoes.ProdutoExistenteExcecao;
 import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Produto;
 import com.dev.api_loja.requisicao.AddProdutoRequest;
@@ -60,8 +63,8 @@ public class ProdutoController {
         try {
             Produto produto = produtoService.adicionaProduto(produtoRequest);
             return ResponseEntity.ok(new ApiResponse("Adicionado com sucesso!", produto));
-        } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
+        } catch (ProdutoExistenteExcecao e) {
+            return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(), null));
         }
     }
 

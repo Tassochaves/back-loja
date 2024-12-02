@@ -35,7 +35,7 @@ public class CarrinhoItemController {
 
         try {
 
-            Usuario usuario = usuarioService.retornaUsuarioPorId(6L);
+            Usuario usuario = usuarioService.retornaUsuarioPorId(1L);
             Carrinho carrinho = carrinhoService.inicializaNovoCarrinho(usuario);
 
             carrinhoItemService.adicionaItemCarrinho(carrinho.getId(), produtoId, quantidade);

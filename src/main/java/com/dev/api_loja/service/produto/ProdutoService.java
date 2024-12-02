@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.dev.api_loja.dto.ImagemDTO;
 import com.dev.api_loja.dto.ProdutoDTO;
+import com.dev.api_loja.excecoes.ProdutoExistenteExcecao;
 import com.dev.api_loja.excecoes.ProdutoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Categoria;
 import com.dev.api_loja.model.Imagem;
@@ -31,10 +32,12 @@ public class ProdutoService implements IProdutoService {
 
     @Override
     public Produto adicionaProduto(AddProdutoRequest produtoRequest) {
-        // Verifica se a categoria é encontrada no BD
-        // Se sim, defina como a nova categoria de produto
-        // Se não, salva como uma nova categoria
-        // Então adiciona como nova categoria de produto
+
+        if (produtoExistente(produtoRequest.getNome(), produtoRequest.getMarca())) {
+            throw new ProdutoExistenteExcecao(
+                    produtoRequest.getNome() + " da Marca " + produtoRequest.getMarca() + " ja existe!");
+        }
+
         Categoria categoria = Optional
                 .ofNullable(categoriaRepository.findByNome(produtoRequest.getCategoria().getNome()))
                 .orElseGet(() -> {
@@ -46,7 +49,11 @@ public class ProdutoService implements IProdutoService {
         return produtoRepository.save(criarProduto(produtoRequest, categoria));
     }
 
-    // Metodo auxiliar
+    // Metodos auxiliares
+    private boolean produtoExistente(String nome, String marca) {
+        return produtoRepository.existsByNomeAndMarca(nome, marca);
+    }
+
     private Produto criarProduto(AddProdutoRequest produtoRequest, Categoria categoria) {
         return new Produto(
                 produtoRequest.getDescricao(),
