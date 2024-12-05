@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.dev.api_loja.model.Usuario;
 import com.dev.api_loja.repository.UsuarioRepository;
 
+import org.springframework.lang.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -18,7 +19,7 @@ public class InicializarDados implements ApplicationListener<ApplicationReadyEve
     private final UsuarioRepository usuarioRepository;
 
     @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
+    public void onApplicationEvent(@NonNull ApplicationReadyEvent event) {
         criaUsuarioPadraoSeNaoExistir();
     }
 

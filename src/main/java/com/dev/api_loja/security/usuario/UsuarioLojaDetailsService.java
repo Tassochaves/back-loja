@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Usuario;
 import com.dev.api_loja.repository.UsuarioRepository;
 
@@ -23,7 +22,7 @@ public class UsuarioLojaDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         Usuario usuario = Optional.ofNullable(usuarioRepository.findByEmail(email))
-                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Usuario nao encontrado!"));
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario nao encontrado!"));
 
         return UsuarioLojaDetails.criarUsuarioDetails(usuario);
     }
