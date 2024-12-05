@@ -3,6 +3,9 @@ package com.dev.api_loja.service.usuario;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dev.api_loja.dto.UsuarioDTO;
@@ -22,6 +25,8 @@ public class UsuarioService implements IUsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final ModelMapper modelMapper;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public Usuario retornaUsuarioPorId(Long usuarioId) {
 
@@ -37,7 +42,7 @@ public class UsuarioService implements IUsuarioService {
 
                     Usuario usuario = new Usuario();
                     usuario.setEmail(usuarioRequest.getEmail());
-                    usuario.setSenha(usuarioRequest.getSenha());
+                    usuario.setSenha(passwordEncoder.encode(usuarioRequest.getSenha()));
                     usuario.setPrimeiroNome(usuarioRequest.getPrimeiroNome());
                     usuario.setSobrenome(usuarioRequest.getSobrenome());
 
@@ -66,6 +71,13 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public UsuarioDTO convertParaDTO(Usuario usuario) {
         return modelMapper.map(usuario, UsuarioDTO.class);
+    }
+
+    @Override
+    public Usuario obtemUsuarioAutenticado() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        return usuarioRepository.findByEmail(email);
     }
 
 }

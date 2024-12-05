@@ -1,6 +1,8 @@
 package com.dev.api_loja.controller;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,7 @@ import com.dev.api_loja.service.carrinho.ICarrinhoItemService;
 import com.dev.api_loja.service.carrinho.ICarrinhoService;
 import com.dev.api_loja.service.usuario.IUsuarioService;
 
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -35,13 +38,15 @@ public class CarrinhoItemController {
 
         try {
 
-            Usuario usuario = usuarioService.retornaUsuarioPorId(1L);
-            Carrinho carrinho = carrinhoService.inicializaNovoCarrinho(usuario);
+            Usuario usuarioAutenticado = usuarioService.obtemUsuarioAutenticado();
+            Carrinho carrinho = carrinhoService.inicializaNovoCarrinho(usuarioAutenticado);
 
             carrinhoItemService.adicionaItemCarrinho(carrinho.getId(), produtoId, quantidade);
             return ResponseEntity.ok(new ApiResponse("Item adicionado com sucesso!", null));
         } catch (RecursoNaoEncontradoExcecao e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+        } catch (JwtException e) {
+            return ResponseEntity.status(UNAUTHORIZED).body(new ApiResponse(e.getMessage(), null));
         }
 
     }

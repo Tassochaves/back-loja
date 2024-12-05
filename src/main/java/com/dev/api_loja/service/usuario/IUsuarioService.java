@@ -16,4 +16,6 @@ public interface IUsuarioService {
     void excluiUsuario(Long usuarioId);
 
     UsuarioDTO convertParaDTO(Usuario usuario);
+
+    Usuario obtemUsuarioAutenticado();
 }
