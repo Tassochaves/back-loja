@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dev.api_loja.dto.ProdutoDTO;
-import com.dev.api_loja.excecoes.ProdutoExistenteExcecao;
-import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
+import com.dev.api_loja.exception.ProdutoExistenteExcecao;
+import com.dev.api_loja.exception.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Produto;
 import com.dev.api_loja.requisicao.AddProdutoRequest;
 import com.dev.api_loja.requisicao.AtualizaProdutoRequest;

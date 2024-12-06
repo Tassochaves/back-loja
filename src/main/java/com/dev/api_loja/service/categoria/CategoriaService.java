@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.dev.api_loja.excecoes.CategoriaExistenteExcecao;
-import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
+import com.dev.api_loja.exception.CategoriaExistenteExcecao;
+import com.dev.api_loja.exception.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Categoria;
 import com.dev.api_loja.repository.CategoriaRepository;
 
@@ -14,14 +14,14 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CategoriaService implements ICategoriaService{
+public class CategoriaService implements ICategoriaService {
 
     private final CategoriaRepository categoriaRepository;
 
     @Override
     public Categoria retornaCategoriaPorId(Long id) {
         return categoriaRepository.findById(id)
-            .orElseThrow(()-> new RecursoNaoEncontradoExcecao("Categoria não encontrada!"));
+                .orElseThrow(() -> new RecursoNaoEncontradoExcecao("Categoria não encontrada!"));
     }
 
     @Override
@@ -37,7 +37,7 @@ public class CategoriaService implements ICategoriaService{
     @Override
     public Categoria adicionaCategoria(Categoria categoria) {
         return Optional.of(categoria).filter(c -> !categoriaRepository.existsByNome(c.getNome()))
-                .map(categoriaRepository :: save)
+                .map(categoriaRepository::save)
                 .orElseThrow(() -> new CategoriaExistenteExcecao(categoria.getNome() + " já existe"));
     }
 
@@ -48,12 +48,12 @@ public class CategoriaService implements ICategoriaService{
 
             return categoriaRepository.save(categoriaRetornada);
 
-        }).orElseThrow(()-> new RecursoNaoEncontradoExcecao("Categoria não encontrada!"));
+        }).orElseThrow(() -> new RecursoNaoEncontradoExcecao("Categoria não encontrada!"));
     }
 
     @Override
     public void deletaCategoriaPorId(Long id) {
-        categoriaRepository.findById(id).ifPresentOrElse(categoriaRepository::delete, ()->{
+        categoriaRepository.findById(id).ifPresentOrElse(categoriaRepository::delete, () -> {
             throw new RecursoNaoEncontradoExcecao("Categoria não encontrada!");
         });
     }

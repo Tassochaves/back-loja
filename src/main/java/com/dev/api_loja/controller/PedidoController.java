@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dev.api_loja.dto.PedidoDTO;
-import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
+import com.dev.api_loja.exception.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Pedido;
 import com.dev.api_loja.resposta.ApiResponse;
 import com.dev.api_loja.service.pedido.IPedidoService;

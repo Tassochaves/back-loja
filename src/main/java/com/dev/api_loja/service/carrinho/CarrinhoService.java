@@ -3,7 +3,8 @@ package com.dev.api_loja.service.carrinho;
 import java.math.BigDecimal;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
-import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
+
+import com.dev.api_loja.exception.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Carrinho;
 import com.dev.api_loja.model.Usuario;
 import com.dev.api_loja.repository.CarrinhoItemRepository;

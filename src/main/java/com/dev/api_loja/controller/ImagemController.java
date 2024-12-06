@@ -22,26 +22,24 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dev.api_loja.dto.ImagemDTO;
-import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
+import com.dev.api_loja.exception.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Imagem;
 import com.dev.api_loja.resposta.ApiResponse;
 import com.dev.api_loja.service.imagem.IImagemService;
 
 import lombok.RequiredArgsConstructor;
 
-
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/imagens")
 public class ImagemController {
-    
+
     private final IImagemService imagemService;
 
     @PostMapping("/enviar")
     public ResponseEntity<ApiResponse> adicionarImagens(
-        @RequestParam List<MultipartFile> arquivos,
-        @RequestParam Long produtoId
-    ){
+            @RequestParam List<MultipartFile> arquivos,
+            @RequestParam Long produtoId) {
 
         try {
             List<ImagemDTO> imagensDTOs = imagemService.adicionaImagens(arquivos, produtoId);
@@ -49,27 +47,30 @@ public class ImagemController {
             return ResponseEntity.ok(new ApiResponse("Enviado com sucesso!", imagensDTOs));
 
         } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Falha ao enviar imagens!", e.getMessage()));
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse("Falha ao enviar imagens!", e.getMessage()));
         }
     }
 
     @GetMapping("/imagens/imagem/download/{imagemId}")
-    public ResponseEntity<Resource> baixarImagens(@PathVariable Long imagemId) throws SQLException{
+    public ResponseEntity<Resource> baixarImagens(@PathVariable Long imagemId) throws SQLException {
 
         Imagem imagem = imagemService.retornaImagemPorId(imagemId);
-        ByteArrayResource conteudoBytes = new ByteArrayResource(imagem.getImagem().getBytes(1, (int) imagem.getImagem().length()));
-        
+        ByteArrayResource conteudoBytes = new ByteArrayResource(
+                imagem.getImagem().getBytes(1, (int) imagem.getImagem().length()));
+
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(imagem.getTipoArquivo()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imagem.getNomeArquivo() + "\"")
                 .body(conteudoBytes);
     }
 
     @PutMapping("/imagem/{imagemId}/atualizar")
-    public ResponseEntity<ApiResponse> atualizarImagem(@PathVariable Long imagemId, @RequestBody MultipartFile arquivo){
-        
+    public ResponseEntity<ApiResponse> atualizarImagem(@PathVariable Long imagemId,
+            @RequestBody MultipartFile arquivo) {
+
         try {
             Imagem imagem = imagemService.retornaImagemPorId(imagemId);
-            
+
             if (imagem != null) {
                 imagemService.atualizaImagem(arquivo, imagemId);
                 return ResponseEntity.ok(new ApiResponse("Enviado com sucesso!", null));
@@ -78,15 +79,16 @@ public class ImagemController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
 
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Falha ao enviar imagens!", INTERNAL_SERVER_ERROR));
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse("Falha ao enviar imagens!", INTERNAL_SERVER_ERROR));
     }
 
     @DeleteMapping("/imagem/{imagemId}/excluir")
-    public ResponseEntity<ApiResponse> excluirImagem(@PathVariable Long imagemId){
-        
+    public ResponseEntity<ApiResponse> excluirImagem(@PathVariable Long imagemId) {
+
         try {
             Imagem imagem = imagemService.retornaImagemPorId(imagemId);
-            
+
             if (imagem != null) {
                 imagemService.deletaImagemPorId(imagemId);
                 return ResponseEntity.ok(new ApiResponse("Excluido com sucesso!", null));
@@ -95,6 +97,7 @@ public class ImagemController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
 
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Falha ao excluir imagens!", INTERNAL_SERVER_ERROR));
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse("Falha ao excluir imagens!", INTERNAL_SERVER_ERROR));
     }
 }

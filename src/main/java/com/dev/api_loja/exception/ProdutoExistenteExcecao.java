@@ -1,4 +1,4 @@
-package com.dev.api_loja.excecoes;
+package com.dev.api_loja.exception;
 
 public class ProdutoExistenteExcecao extends RuntimeException {
 

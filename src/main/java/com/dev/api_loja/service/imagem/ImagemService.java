@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dev.api_loja.dto.ImagemDTO;
-import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
+import com.dev.api_loja.exception.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Imagem;
 import com.dev.api_loja.model.Produto;
 import com.dev.api_loja.repository.ImagemRepository;

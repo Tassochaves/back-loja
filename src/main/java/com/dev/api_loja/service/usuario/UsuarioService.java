@@ -9,8 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dev.api_loja.dto.UsuarioDTO;
-import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
-import com.dev.api_loja.excecoes.UsuarioExistenteExcecao;
+import com.dev.api_loja.exception.RecursoNaoEncontradoExcecao;
+import com.dev.api_loja.exception.UsuarioExistenteExcecao;
 import com.dev.api_loja.model.Usuario;
 import com.dev.api_loja.repository.UsuarioRepository;
 import com.dev.api_loja.requisicao.AddUsuarioRequest;

@@ -29,7 +29,7 @@ public class ApiLojaConfig {
     private final UsuarioLojaDetailsService usuarioDetailsService;
     private final AuthEntryPointJwt authEntryPointJwt;
 
-    private static final String[] ENDPOINTS_PUBLICOS = { "/login", "/cadastrar" };
+    private static final String[] ENDPOINTS_PUBLICOS = { "/api/v1/auth/login", "/cadastrar" };
 
     @Bean
     public ModelMapper modelMapper() {
@@ -46,10 +46,12 @@ public class ApiLojaConfig {
         return new AuthTokenFilter();
     }
 
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
+    @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 

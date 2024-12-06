@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dev.api_loja.dto.UsuarioDTO;
-import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
-import com.dev.api_loja.excecoes.UsuarioExistenteExcecao;
+import com.dev.api_loja.exception.RecursoNaoEncontradoExcecao;
+import com.dev.api_loja.exception.UsuarioExistenteExcecao;
 import com.dev.api_loja.model.Usuario;
 import com.dev.api_loja.requisicao.AddUsuarioRequest;
 import com.dev.api_loja.requisicao.AtualizaUsuarioRequest;

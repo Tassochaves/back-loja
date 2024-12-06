@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.dev.api_loja.dto.ImagemDTO;
 import com.dev.api_loja.dto.ProdutoDTO;
-import com.dev.api_loja.excecoes.ProdutoExistenteExcecao;
-import com.dev.api_loja.excecoes.ProdutoNaoEncontradoExcecao;
+import com.dev.api_loja.exception.ProdutoExistenteExcecao;
+import com.dev.api_loja.exception.ProdutoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Categoria;
 import com.dev.api_loja.model.Imagem;
 import com.dev.api_loja.model.Produto;

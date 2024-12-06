@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.dev.api_loja.dto.PedidoDTO;
 import com.dev.api_loja.enums.StatusPedido;
-import com.dev.api_loja.excecoes.RecursoNaoEncontradoExcecao;
+import com.dev.api_loja.exception.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Carrinho;
 import com.dev.api_loja.model.Pedido;
 import com.dev.api_loja.model.PedidoItem;
