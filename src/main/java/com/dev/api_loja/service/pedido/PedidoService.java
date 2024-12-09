@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.dev.api_loja.dto.PedidoDTO;
 import com.dev.api_loja.enums.StatusPedido;
+import com.dev.api_loja.exception.EstoqueIndisponivelExcecao;
 import com.dev.api_loja.exception.RecursoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Carrinho;
 import com.dev.api_loja.model.Pedido;
@@ -59,9 +60,16 @@ public class PedidoService implements IPedidoService {
         return pedido;
     }
 
+    // Transforma itens do carrinho em itens do pedido.
     private List<PedidoItem> criarItensPedido(Pedido pedido, Carrinho carrinho) {
         return carrinho.getItensCarrinho().stream().map(carrinhoItem -> {
             Produto produto = carrinhoItem.getProduto();
+
+            if (produto.getEstoque() < carrinhoItem.getQuantidade()) {
+                throw new EstoqueIndisponivelExcecao(
+                        "Estoque indisponivel, quantidade no estoque: " + produto.getEstoque());
+            }
+
             produto.setEstoque(produto.getEstoque() - carrinhoItem.getQuantidade());
 
             produtoRepository.save(produto);
