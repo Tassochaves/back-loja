@@ -70,7 +70,7 @@ public class PedidoService implements IPedidoService {
                         "Estoque indisponivel, quantidade no estoque: " + produto.getEstoque());
             }
 
-            produto.setEstoque(produto.getEstoque() - carrinhoItem.getQuantidade());
+            // produto.setEstoque(produto.getEstoque() - carrinhoItem.getQuantidade());
 
             produtoRepository.save(produto);
 

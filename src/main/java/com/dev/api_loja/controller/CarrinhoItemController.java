@@ -52,7 +52,7 @@ public class CarrinhoItemController {
 
     }
 
-    @DeleteMapping("remover/carrinho/{carrinhoId}/item/{itemId}")
+    @DeleteMapping("/carrinho/{carrinhoId}/item/{itemId}/remover")
     public ResponseEntity<ApiResponse> removerItemCarrinho(@PathVariable Long carrinhoId, @PathVariable Long itemId) {
 
         try {
@@ -63,14 +63,14 @@ public class CarrinhoItemController {
         }
     }
 
-    @PutMapping("atualizar/carrinho/{carrinhoId}/item/{itemId}")
+    @PutMapping("/carrinho/{carrinhoId}/produto/{produtoId}/atualizar")
     public ResponseEntity<ApiResponse> atualizarQuantidadeItem(
             @PathVariable Long carrinhoId,
-            @PathVariable Long itemId,
+            @PathVariable Long produtoId,
             @RequestParam Integer quantidade) {
 
         try {
-            carrinhoItemService.atualizaQuantidadeItem(carrinhoId, itemId, quantidade);
+            carrinhoItemService.atualizaQuantidadeItem(carrinhoId, produtoId, quantidade);
             return ResponseEntity.ok(new ApiResponse("Item atualizado com sucesso!", null));
         } catch (RecursoNaoEncontradoExcecao e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
