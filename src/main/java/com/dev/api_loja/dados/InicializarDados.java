@@ -7,9 +7,9 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dev.api_loja.model.Papel;
+import com.dev.api_loja.model.Role;
 import com.dev.api_loja.model.Usuario;
-import com.dev.api_loja.repository.PapelRepository;
+import com.dev.api_loja.repository.RolelRepository;
 import com.dev.api_loja.repository.UsuarioRepository;
 
 import org.springframework.lang.NonNull;
@@ -25,16 +25,16 @@ public class InicializarDados implements ApplicationListener<ApplicationReadyEve
     // popular a base de dados com usuários padrão na inicialização da aplicação
 
     private final UsuarioRepository usuarioRepository;
-    private final PapelRepository papelRepository;
+    private final RolelRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public void onApplicationEvent(@NonNull ApplicationReadyEvent event) {
-        Set<String> papeisPadrao = Set.of("PAPEL_ADMIN", "PAPEL_USUARIO");
+        Set<String> rolesPadrao = Set.of("ROLE_ADMIN", "ROLE_USUARIO");
 
         criaUsuarioPadraoSeNaoExistir();
 
-        criarPapelPadraoSeNaoExistir(papeisPadrao);
+        criarRolePadraoSeNaoExistir(rolesPadrao);
 
         criaUsuarioAdminSeNaoExistir();
 
@@ -42,7 +42,7 @@ public class InicializarDados implements ApplicationListener<ApplicationReadyEve
 
     private void criaUsuarioAdminSeNaoExistir() {
 
-        Papel pepelAdmin = papelRepository.findByNome("PAPEL_ADMIN").get();
+        Role roleAdmin = roleRepository.findByNome("ROLE_ADMIN").get();
         for (int i = 1; i <= 2; i++) {
             String emailPadrao = "admin" + i + "@dev.com";
 
@@ -55,7 +55,7 @@ public class InicializarDados implements ApplicationListener<ApplicationReadyEve
             usuario.setSobrenome("Admin" + i);
             usuario.setEmail(emailPadrao);
             usuario.setSenha(passwordEncoder.encode("123456"));
-            usuario.setPapeis(Set.of(pepelAdmin));
+            usuario.setRoles(Set.of(roleAdmin));
             usuarioRepository.save(usuario);
 
             System.out.println("Usuario administrador: " + i + "criado com sucesso");
@@ -64,7 +64,7 @@ public class InicializarDados implements ApplicationListener<ApplicationReadyEve
 
     private void criaUsuarioPadraoSeNaoExistir() {
 
-        Papel pepelUsuario = papelRepository.findByNome("PAPEL_USUARIO").get();
+        Role roleUsuario = roleRepository.findByNome("ROLE_USUARIO").get();
 
         for (int i = 1; i <= 5; i++) {
             String emailPadrao = "usuario" + i + "@dev.com";
@@ -78,18 +78,18 @@ public class InicializarDados implements ApplicationListener<ApplicationReadyEve
             usuario.setSobrenome("usuario" + i);
             usuario.setEmail(emailPadrao);
             usuario.setSenha(passwordEncoder.encode("123456"));
-            usuario.setPapeis(Set.of(pepelUsuario));
+            usuario.setRoles(Set.of(roleUsuario));
             usuarioRepository.save(usuario);
 
             System.out.println("Usuario padrao: " + i + "criado com sucesso");
         }
     }
 
-    private void criarPapelPadraoSeNaoExistir(Set<String> papeis) {
+    private void criarRolePadraoSeNaoExistir(Set<String> roles) {
 
-        papeis.stream()
-                .filter(papel -> papelRepository.findByNome(papel).isEmpty()).map(Papel::new)
-                .forEach(papelRepository::save);
+        roles.stream()
+                .filter(role -> roleRepository.findByNome(role).isEmpty()).map(Role::new)
+                .forEach(roleRepository::save);
     }
 
 }

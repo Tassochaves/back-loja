@@ -29,8 +29,8 @@ public class UsuarioLojaDetails implements UserDetails {
 
     public static UsuarioLojaDetails criarUsuarioDetails(Usuario usuario) {
 
-        List<GrantedAuthority> listaAutoridades = usuario.getPapeis().stream()
-                .map(papel -> new SimpleGrantedAuthority(papel.getNome())).collect(Collectors.toList());
+        List<GrantedAuthority> listaAutoridades = usuario.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getNome())).collect(Collectors.toList());
 
         return new UsuarioLojaDetails(
                 usuario.getId(),

@@ -48,6 +48,6 @@ public class Usuario {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
             CascadeType.REFRESH })
-    @JoinTable(name = "papeis_usuario", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "pepel_id", referencedColumnName = "id"))
-    private Collection<Papel> papeis = new HashSet<>();
+    @JoinTable(name = "roles_usuario", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles = new HashSet<>();
 }

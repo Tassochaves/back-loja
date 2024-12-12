@@ -16,17 +16,17 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Papel {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
 
-    public Papel(String nome) {
+    public Role(String nome) {
         this.nome = nome;
     }
 
-    @ManyToMany(mappedBy = "papeis")
+    @ManyToMany(mappedBy = "roles")
     private Collection<Usuario> usuarios = new HashSet<>();
 }

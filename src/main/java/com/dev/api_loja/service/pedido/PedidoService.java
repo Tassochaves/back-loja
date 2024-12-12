@@ -103,4 +103,8 @@ public class PedidoService implements IPedidoService {
         return modelMapper.map(pedido, PedidoDTO.class);
     }
 
+    public void cancelarPeido(Long pedidoId) {
+
+    }
+
 }

@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dev.api_loja.dto.ProdutoDTO;
 import com.dev.api_loja.exception.ProdutoExistenteExcecao;
-import com.dev.api_loja.exception.RecursoNaoEncontradoExcecao;
+import com.dev.api_loja.exception.ProdutoNaoEncontradoExcecao;
 import com.dev.api_loja.model.Produto;
 import com.dev.api_loja.requisicao.AddProdutoRequest;
 import com.dev.api_loja.requisicao.AtualizaProdutoRequest;
@@ -57,6 +58,7 @@ public class ProdutoController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/adicionar")
     public ResponseEntity<ApiResponse> adicionarProduto(@RequestBody AddProdutoRequest produtoRequest) {
 
@@ -68,6 +70,7 @@ public class ProdutoController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/produto/{produtoId}/atualizar")
     public ResponseEntity<ApiResponse> atualizarProduto(@RequestBody AtualizaProdutoRequest atualizaRequest,
             @PathVariable Long produtoId) {
@@ -80,6 +83,7 @@ public class ProdutoController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/produto/{produtoId}/excluir")
     public ResponseEntity<ApiResponse> excluirProduto(@PathVariable Long produtoId) {
 
@@ -88,7 +92,7 @@ public class ProdutoController {
             produtoService.deletaProdutoPorId(produtoId);
             return ResponseEntity.ok(new ApiResponse("Produto deletado com sucess!", produtoId));
 
-        } catch (RecursoNaoEncontradoExcecao e) {
+        } catch (ProdutoNaoEncontradoExcecao e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }
